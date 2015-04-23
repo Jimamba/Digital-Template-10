@@ -22,14 +22,34 @@ window.onload = function() {
         game.load.spritesheet('playertwo','assets/WeegeeCatcherSheet.png',40,60);
         game.load.audio('boop','assets/grab.php.mp3');
         game.load.audio('music','assets/ac_theme_8bit.mp3');
+        game.load.image('wall','assets/wall.png');
+        game.load.image('walltwo','assets/walltwo.png');
+        game.load.image('watermelon','assets/watermelon.png');
+        game.load.image('p1','assets/p1.png');
+        game.load.image('p2','assets/p2.png');
+        game.load.image('start','assets/start.png');
     }
     
-    function endgame(player,playertwo)
+    function onewin(player,watermelon)
     {
     effect.play('',0,1,false);
     player.kill();
+    playertwo.kill();
+    watermelon.kill();
+    p1 = game.add.sprite(0,0,'p1');
     music.stop();
     }
+    
+    function twowin(playertwo,watermelon)
+    {
+    effect.play('',0,1,false);
+    playertwo.kill();
+    player.kill();
+    watermelon.kill();
+    p2 = game.add.sprite(0,0,'p2');
+    music.stop();
+    }
+    
     var music;
     var effect;
     var player;
@@ -39,15 +59,25 @@ window.onload = function() {
     var down;
     var left;
     var right;
+    var walls;
+    var watermelon;
+    var p1;
+    var p2;
+    var start;
+    var h;
+    
+    
     
     function create() {
     music = game.add.audio('music');
     music.play();
+   	
     effect = game.add.audio('boop',1,true);
     game.add.sprite(0,0, 'grass');
+    
         // Create a sprite at the center of the screen using the 'logo' image.
-        player = game.add.sprite( game.world.centerX, game.world.centerY, 'player' );
-        playertwo = game.add.sprite(700,500,'playertwo');
+        player = game.add.sprite(760, game.world.height, 'player' );
+        playertwo = game.add.sprite(0,game.world.height,'playertwo');
         // Anchor the sprite at its center, as opposed to its top-left corner.
         // so it will be truly centered.
         player.anchor.setTo( 0.5, 0.5 );
@@ -76,8 +106,73 @@ window.onload = function() {
         // Add some text using a CSS style.
         // Center it in X, and position its top 15 pixels from the top of the world.
         var style = { font: "25px Verdana", fill: "#9999ff", align: "center" };
-        var text = game.add.text( game.world.centerX, 15, "Catch the dog", style );
+        var text = game.add.text(150, 15, "Get the watermelon", style );
         text.anchor.setTo( 0.5, 0.0 );
+        
+        walls = game.add.group();
+     	walls.enableBody = true;
+     	
+     	var wall = walls.create(0,game.world.height - 100,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(100,game.world.height - 100,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(200,game.world.height - 100,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(500,game.world.height - 100,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(600,game.world.height - 100,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(700,game.world.height - 100,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(280,game.world.height - 200,'walltwo');
+     	wall.body.immovable = true;
+     	var wall = walls.create(500,game.world.height - 200,'walltwo');
+     	wall.body.immovable = true;
+     	var wall = walls.create(200,game.world.height - 200,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(500,game.world.height - 200,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(100,game.world.height - 200,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(600,game.world.height - 200,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(0,game.world.height - 200,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(700,game.world.height - 200,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(300,game.world.height - 300,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(400,game.world.height - 300,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(200,game.world.height - 300,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(500,game.world.height - 300,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(100,game.world.height - 300,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(600,game.world.height - 300,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(0,game.world.height - 400,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(100,game.world.height - 400,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(200,game.world.height - 400,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(500,game.world.height - 400,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(600,game.world.height - 400,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(700,game.world.height - 400,'wall');
+     	wall.body.immovable = true;
+     	var wall = walls.create(280,game.world.height - 500,'walltwo');
+     	wall.body.immovable = true
+     	var wall = walls.create(500,game.world.height - 500,'walltwo');
+     	wall.body.immovable = true;
+     	
+     	watermelon = game.add.sprite(400,0,'watermelon');
+     	game.physics.enable( watermelon, Phaser.Physics.ARCADE );
+     	h = game.input.keyboard.addKey(Phaser.Keyboard.H);
+     	start = game.add.sprite(0,0,'start');
     }
     
     function update() 
@@ -87,7 +182,12 @@ window.onload = function() {
         // in X or Y.
         // This function returns the rotation angle that makes it visually match its
         // new trajectory.
-        
+        game.physics.arcade.collide(player,walls);
+        game.physics.arcade.collide(playertwo,walls);
+        game.physics.arcade.collide(player,playertwo);
+        game.physics.arcade.collide(playertwo,player);
+        player.animations.stop();
+        playertwo.animations.stop();
         player.body.velocity.x = 0;
         player.body.velocity.y = 0;
         playertwo.body.velocity.y = 0;
@@ -140,7 +240,13 @@ window.onload = function() {
         playertwo.animations.stop();
         }
         
-        game.physics.arcade.overlap(player, playertwo, endgame, null, this);
+        if(h.isDown)
+        {
+        start.kill();
+        }
+        
+       game.physics.arcade.overlap(player,watermelon , onewin, null, this);
+       game.physics.arcade.overlap(playertwo,watermelon, twowin, null, this);
     //end of update  
     }
 };
